@@ -1,8 +1,10 @@
 #include <iostream>
+#include "resources.h"
 #include "state.h"
 
 void test()
 {
+  test_resources();
   test_state();
 }
 

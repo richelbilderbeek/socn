@@ -19,8 +19,7 @@ state::state(
 
 int count_points(const state& s) noexcept
 {
-  return
-      1 * s.get_n_villages()
+  return s.get_n_villages()
     + (2 * s.get_n_cities())
     + (2 * s.get_has_longest_road())
     + (2 * s.get_has_biggest_knight_force())
