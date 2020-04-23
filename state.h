@@ -1,6 +1,7 @@
 #ifndef STATE_H
 #define STATE_H
 
+#include <vector>
 #include "resources.h"
 
 class state
@@ -49,6 +50,13 @@ int count_points(const state& s) noexcept;
 /// Calculate the predicted number of turns to go from
 /// the first to the second state
 int calc_n_turns(const state& a, const state& b);
+
+/// Calculate the predicted number of turns to go from
+/// the first to each of the second states
+std::vector<int> calc_n_turns(const state& from, const std::vector<state>& to);
+
+/// Get all the possible win states
+std::vector<state> get_win_states() noexcept;
 
 /// Is the state winning?
 bool has_won(const state& s) noexcept;
