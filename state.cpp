@@ -6,15 +6,50 @@ state::state(
   const int n_cities,
   const bool has_longest_road,
   const bool has_biggest_knight_force,
-  const int n_development_points
+  const int n_development_points,
+  const resources& income
 )
   : m_has_biggest_knight_force{has_biggest_knight_force},
     m_has_longest_road{has_longest_road},
+    m_income{income},
     m_n_cities{n_cities},
     m_n_development_points{n_development_points},
     m_n_villages{n_villages}
 {
 
+}
+
+int calc_n_turns(const state& a, const state& b)
+{
+  resources needed;
+  const int n_villages = b.get_n_villages() - a.get_n_villages();
+  if (n_villages > 0)
+  {
+    // Building a city removed a village
+    needed = needed
+      + (n_villages * get_village_cost())
+      + (n_villages * 2 * get_road_cost())
+    ;
+  }
+  const int n_cities = b.get_n_cities() - a.get_n_cities();
+  needed = needed + (n_cities * get_city_cost());
+
+  const bool build_trade_route = b.get_has_longest_road()
+    && !a.get_has_longest_road();
+  if (build_trade_route)
+  {
+    needed = needed + (5 * get_road_cost());
+  }
+
+  const bool obtain_knight_force = b.get_has_biggest_knight_force()
+    && !a.get_has_biggest_knight_force();
+  if (obtain_knight_force)
+  {
+    needed = needed + (6 * get_card_cost());
+  }
+
+  const resources& income = a.get_income();
+  return 36 * calc_n_turns(needed, income);
 }
 
 int count_points(const state& s) noexcept
@@ -40,7 +75,7 @@ void test_state()
   }
   //5 cities wins the game
   {
-    state s(0, 5);
+    const state s(0, 5);
     assert(s.get_n_villages() == 0);
     assert(s.get_n_cities() == 5);
     assert(!s.get_has_longest_road());
@@ -49,7 +84,7 @@ void test_state()
   }
   //2 villages and 4 cities wins the game
   {
-    state s(2, 4);
+    const state s(2, 4);
     assert(s.get_n_villages() == 2);
     assert(s.get_n_cities() == 4);
     assert(!s.get_has_longest_road());
@@ -58,7 +93,7 @@ void test_state()
   }
   //2 villages, 3 cities and longest road wins the game
   {
-    state s(2, 3, true);
+    const state s(2, 3, true);
     assert(s.get_n_villages() == 2);
     assert(s.get_n_cities() == 3);
     assert(s.get_has_longest_road());
@@ -67,7 +102,7 @@ void test_state()
   }
   //2 villages, 2 cities, longest road and biggest knight force wins the game
   {
-    state s(2, 2, true, true);
+    const state s(2, 2, true, true);
     assert(s.get_n_villages() == 2);
     assert(s.get_n_cities() == 2);
     assert(s.get_has_longest_road());
@@ -76,12 +111,86 @@ void test_state()
   }
   //4 villages, 2 cities, 2 development points wins the game
   {
-    state s(4, 2, false, false, 2);
+    const state s(4, 2, false, false, 2);
     assert(s.get_n_villages() == 4);
     assert(s.get_n_cities() == 2);
     assert(!s.get_has_longest_road());
     assert(!s.get_has_biggest_knight_force());
     assert(s.get_n_development_points() == 2);
     assert(has_won(s));
+  }
+  // Calculate the number of turns to build a
+  // village. This includes building two roads
+  {
+    // 1st road: 1 wood, 1 brick
+    // 2nd road: 1 wood, 1 brick
+    // village: 1 wood, 1 brick, 1 sheep, 1 wheat
+    // In total: 8 resources
+    // Only have one income, which needs to be traded 1 to 4.
+    // Therefore, it will take 8 * 4 * 36 turns
+    const resources income(
+      n_wood(0),
+      n_brick(0),
+      n_wheat(0),
+      n_wool(0),
+      n_ore(1)
+    );
+    const state a(1, 0, false, false, 0, income);
+    const state b(2, 0, false, false, 0, income);
+    const int n = calc_n_turns(a, b);
+    assert(n == 8 * 4 * 36);
+  }
+  // Calculate the number of turns to build a
+  // city.
+  {
+    // City: 2 wheat, 3 ore
+    // In total: 5 resources
+    // Only have one income, which needs to be traded 1 to 4.
+    // Therefore, 3 + (2 * 4) == 11
+    const resources income(
+      n_wood(0),
+      n_brick(0),
+      n_wheat(0),
+      n_wool(0),
+      n_ore(1)
+    );
+    const state a(1, 1, false, false, 0, income);
+    const state b(0, 2, false, false, 0, income);
+    const int n = calc_n_turns(a, b);
+    assert(n == 11 * 36);
+  }
+  // Calculate the number of turns to build a
+  // the largest trade route
+  {
+    // Trade route: 5x road (as a proxy)
+    // In total: 5x wood, 5x brick
+    const resources income(
+      n_wood(2),
+      n_brick(2),
+      n_wheat(0),
+      n_wool(0),
+      n_ore(1)
+    );
+    const state a(1, 1, false, false, 0, income);
+    const state b(1, 1, true, false, 0, income);
+    const int n = calc_n_turns(a, b);
+    assert(n == 3 * 36);
+  }
+  // Calculate the number of turns to build a
+  // the largest knight force
+  {
+    // Knight force: 3x knights,
+    // 14 our of 25 card are knights, so need approx 6 card
+    const resources income(
+      n_wood(0),
+      n_brick(0),
+      n_wheat(1),
+      n_wool(1),
+      n_ore(1)
+    );
+    const state a(1, 1, true, false, 0, income);
+    const state b(1, 1, true, true, 0, income);
+    const int n = calc_n_turns(a, b);
+    assert(n == 6 * 36);
   }
 }

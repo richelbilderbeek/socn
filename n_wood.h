@@ -10,5 +10,8 @@ private:
 };
 
 bool operator==(const n_wood& lhs, const n_wood& rhs) noexcept;
+n_wood operator*(const n_wood& w, const int n) noexcept;
+n_wood operator+(const n_wood& lhs, const n_wood& rhs) noexcept;
+n_wood operator-(const n_wood& lhs, const n_wood& rhs) noexcept;
 
 #endif // N_WOOD_H

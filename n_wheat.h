@@ -10,5 +10,8 @@ private:
 };
 
 bool operator==(const n_wheat& lhs, const n_wheat& rhs) noexcept;
+n_wheat operator*(const n_wheat& w, const int n) noexcept;
+n_wheat operator+(const n_wheat& lhs, const n_wheat& rhs) noexcept;
+n_wheat operator-(const n_wheat& lhs, const n_wheat& rhs) noexcept;
 
 #endif // N_WHEAT_H

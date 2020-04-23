@@ -18,11 +18,11 @@ public:
     const n_ore ores = n_ore(0)
   );
 
-  auto get_woods() const noexcept { return m_woods; }
-  auto get_bricks() const noexcept { return m_bricks; }
-  auto get_wheats() const noexcept { return m_wheats; }
-  auto get_wools() const noexcept { return m_wools; }
-  auto get_ores() const noexcept { return m_ores; }
+  const n_wood& get_woods() const noexcept { return m_woods; }
+  const n_brick& get_bricks() const noexcept { return m_bricks; }
+  const n_wheat& get_wheats() const noexcept { return m_wheats; }
+  const n_wool& get_wools() const noexcept { return m_wools; }
+  const n_ore& get_ores() const noexcept { return m_ores; }
 
 private:
   n_wood m_woods;
@@ -32,6 +32,9 @@ private:
   n_ore m_ores;
 
 };
+
+/// Calculate the number of turn it takes to reach the goal
+int calc_n_turns(const resources& goal, const resources& income);
 
 /// The cost to draw a card
 resources get_card_cost() noexcept;
@@ -45,6 +48,18 @@ resources get_road_cost() noexcept;
 /// The cost to build a village
 resources get_village_cost() noexcept;
 
+/// Sum the negatives and take the absolute value of that
+/// (that is -2 and -1 is 3)
+int sum_negatives(const resources& r);
+
+/// Sum the positives
+int sum_positives(const resources& r);
+
 void test_resources();
+
+resources operator*(const int n, const resources& r) noexcept;
+
+resources operator+(const resources& lhs, const resources& rhs) noexcept;
+resources operator-(const resources& lhs, const resources& rhs) noexcept;
 
 #endif // RESOURCES_H

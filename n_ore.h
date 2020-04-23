@@ -10,5 +10,8 @@ private:
 };
 
 bool operator==(const n_ore& lhs, const n_ore& rhs) noexcept;
+n_ore operator*(const n_ore& w, const int n) noexcept;
+n_ore operator+(const n_ore& lhs, const n_ore& rhs) noexcept;
+n_ore operator-(const n_ore& lhs, const n_ore& rhs) noexcept;
 
 #endif // N_ORE_H

@@ -10,5 +10,8 @@ private:
 };
 
 bool operator==(const n_brick& lhs, const n_brick& rhs) noexcept;
+n_brick operator*(const n_brick& w, const int n) noexcept;
+n_brick operator+(const n_brick& lhs, const n_brick& rhs) noexcept;
+n_brick operator-(const n_brick& lhs, const n_brick& rhs) noexcept;
 
 #endif // N_BRICK_H
