@@ -19,7 +19,9 @@ state::state(
     m_n_development_points{n_development_points},
     m_n_villages{n_villages}
 {
-
+  if (!is_valid(*this)) {
+    throw std::logic_error("Invalid state");
+  }
 }
 
 int calc_n_turns(const state& a, const state& b)
@@ -78,23 +80,7 @@ int count_points(const state& s) noexcept
 
 state get_richels_favorite_begin_state()
 {
-  // Resource | Dice  | Income
-  // Resource | value | value
-  // =============================
-  // Wheat    | 4     | 3
-  // Wood     | 5     | 4
-  // Wood     | 6     | 5
-  // =============================
-  // Ore      | 5     | 2
-  // Brick    | 10    | 3
-  // Wheat    | 6     | 5
-  const resources income(
-      n_wood(5 + 4),
-      n_brick(3),
-      n_wheat(3 + 5),
-      n_wool(0),
-      n_ore(2)
-  );
+  const resources income = get_extra_income(0) + get_extra_income(1);
   return state(
     2,
     0,
@@ -114,10 +100,25 @@ std::vector<state> get_win_states() noexcept
     {
       for (int n_development_points = 0; n_development_points != 8; ++n_development_points)
       {
-         all_states.push_back(state(n_villages, n_cities, false, false, n_development_points));
-         all_states.push_back(state(n_villages, n_cities, false,  true, n_development_points));
-         all_states.push_back(state(n_villages, n_cities,  true, false, n_development_points));
-         all_states.push_back(state(n_villages, n_cities,  true,  true, n_development_points));
+        for (int has_longest_road = 0; has_longest_road != 2; ++has_longest_road)
+        {
+          for (int has_biggest_knight_force = 0; has_biggest_knight_force != 2; ++has_biggest_knight_force)
+          {
+            try
+            {
+              all_states.push_back(
+                state(
+                  n_villages,
+                  n_cities,
+                  has_longest_road,
+                  has_biggest_knight_force,
+                  n_development_points
+                )
+              );
+            }
+            catch (const std::logic_error&) {} // OK
+          }
+        }
       }
     }
   }
@@ -136,6 +137,20 @@ bool has_won(const state& s) noexcept
   return count_points(s) >= 10;
 }
 
+bool is_valid(const state& s) noexcept
+{
+  return
+       s.get_n_villages() >= 0
+    && s.get_n_villages() <= 5
+    && s.get_n_cities() >= 0
+    && s.get_n_cities() <= 5
+    && s.get_n_villages() + s.get_n_cities() <= 10
+    && s.get_n_development_points() >= 0
+    && s.get_n_development_points() <= 5
+    && sum_negatives(s.get_income()) == 0
+  ;
+}
+
 state to_next_state(const state& s, const action& a)
 {
   switch(a)
@@ -147,7 +162,10 @@ state to_next_state(const state& s, const action& a)
         s.get_has_longest_road(),
         s.get_has_biggest_knight_force(),
         s.get_n_development_points(),
-        s.get_income() //TODO: income should increase
+        s.get_income()
+          + get_extra_income(
+            s.get_n_villages() + s.get_n_cities()
+          )
       );
     case action::build_city:
       return state(
@@ -156,7 +174,10 @@ state to_next_state(const state& s, const action& a)
         s.get_has_longest_road(),
         s.get_has_biggest_knight_force(),
         s.get_n_development_points(),
-        s.get_income() //TODO: income should increase
+        s.get_income()
+          + get_extra_income(
+            s.get_n_cities()
+          )
       );
     case action::build_trade_route:
       return state(
@@ -356,6 +377,37 @@ void test_state()
     const state start(2, 0, false, false, 0, income);
     const auto win_states = get_win_states();
     const std::vector<int> ns = calc_n_turns(start, win_states);
-    assert(ns.size() == 141);
+    const auto n_win_states = win_states.size();
+    const auto n_turnses = ns.size();
+
+    assert(n_win_states == n_turnses);
+    assert(n_win_states == 114);
   }
+  // Acquiring a village generates extra income
+  {
+    const resources income(
+      n_wood(9),
+      n_brick(3),
+      n_wheat(3 + 5),
+      n_wool(0),
+      n_ore(4)
+    );
+    const state begin(2, 0, false, false, 0, income);
+    const state next{to_next_state(begin, action::build_village)};
+    assert(next.get_income() > begin.get_income());
+  }
+  // Acquiring a city generates extra income
+  {
+    const resources income(
+      n_wood(9),
+      n_brick(3),
+      n_wheat(3 + 5),
+      n_wool(0),
+      n_ore(4)
+    );
+    const state begin(2, 0, false, false, 0, income);
+    const state next{to_next_state(begin, action::build_city)};
+    assert(next.get_income() > begin.get_income());
+  }
+  //
 }

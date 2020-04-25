@@ -25,6 +25,9 @@ int calc_n_turns(const state& s, const action& a);
 /// Get all the valid actions for a state
 std::vector<action> get_actions(const state& s);
 
+/// Convert each vector of actions to a unique integer
+int to_int(const std::vector<action>& actions);
+
 void test_action();
 
 /// Convert to string

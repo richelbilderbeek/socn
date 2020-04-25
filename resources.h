@@ -38,11 +38,21 @@ private:
 /// Calculate the number of turn it takes to reach the goal
 int calc_n_turns(const resources& goal, const resources& income);
 
+/// Convert a dice value to an actual value
+int dice_to_value(const int dice_value);
+
 /// The cost to draw a card
 resources get_card_cost() noexcept;
 
 /// The cost to build a city
 resources get_city_cost() noexcept;
+
+/// Get extra income, by building an extra village
+/// (n > 1) or building a city (n is the index of one
+/// of the existing villages)
+/// @param n the index of the village or city,
+///   where zero is the first initial village
+resources get_extra_income(const int n);
 
 /// The cost to build a road
 resources get_road_cost() noexcept;
@@ -57,13 +67,25 @@ int sum_negatives(const resources& r);
 /// Sum the positives
 int sum_positives(const resources& r);
 
+/// Calculate how many resources of any kind can be
+/// acquired by trading with the bank,
+/// by trading the left-over or positive resources with
+/// a certain ratio with the bank
+/// @param ratio trading ratio.
+///   Set to 4 for the 4:1 ratio at the start.
+///   Set to 3 when a 3:1 harbor is aquired.
+int trade_positives(
+  const resources& r,
+  const int ratio = 4
+);
+
 /// Convert to string
 std::string to_str(const resources& r);
 
 void test_resources();
 
+bool operator>(const resources& lhs, const resources& rhs) noexcept;
 resources operator*(const int n, const resources& r) noexcept;
-
 resources operator+(const resources& lhs, const resources& rhs) noexcept;
 resources operator-(const resources& lhs, const resources& rhs) noexcept;
 std::ostream& operator<<(std::ostream& os, const resources& r);

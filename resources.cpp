@@ -4,6 +4,7 @@
 #include <cmath>
 #include <iostream>
 #include <sstream>
+#include <vector>
 
 resources::resources(
   const n_wood woods,
@@ -28,14 +29,21 @@ int calc_n_turns(
   for (int i = 1; i != 100; ++i) {
     const resources difference = (i * income) - goal;
     const int n_negative = sum_negatives(difference);
-    const int n_positive = sum_positives(difference);
-    if (n_positive / 4 >= n_negative) return i;
+    const int n_tradable = trade_positives(difference, 4);
+    if (n_tradable >= n_negative) return i;
   }
   assert(!"Should never get here");
   return 0;
 }
 
-/// The cost to draw a card
+int dice_to_value(const int dice_value)
+{
+  assert(dice_value >= 2);
+  assert(dice_value <= 12);
+  assert(dice_value != 7);
+  return 6 - std::abs(7 - dice_value);
+}
+
 resources get_card_cost() noexcept
 {
   return resources(
@@ -57,6 +65,95 @@ resources get_city_cost() noexcept
     n_wool(0),
     n_ore(3)
   );
+}
+
+resources get_extra_income(const int n)
+{
+  switch (n)
+  {
+    case 0:
+      return resources(
+        n_wood(dice_to_value(5) + dice_to_value(6)),
+        n_brick(0),
+        n_wheat(dice_to_value(4)),
+        n_wool(0),
+        n_ore(0)
+      );
+    case 1:
+      return resources(
+        n_wood(0),
+        n_brick(dice_to_value(10)),
+        n_wheat(dice_to_value(6)),
+        n_wool(0),
+        n_ore(dice_to_value(5))
+      );
+    case 2:
+      return resources(
+        n_wood(dice_to_value(3)),
+        n_brick(dice_to_value(8)),
+        n_wheat(0),
+        n_wool(0),
+        n_ore(dice_to_value(5))
+      );
+    case 3:
+      return resources(
+        n_wood(0),
+        n_brick(0),
+        n_wheat(0),
+        n_wool(0),
+        n_ore(0)
+      );
+    case 4:
+      return resources(
+        n_wood(dice_to_value(11)),
+        n_brick(dice_to_value(10)),
+        n_wheat(0),
+        n_wool(0),
+        n_ore(dice_to_value(8))
+      );
+    case 5:
+      return resources(
+        n_wood(dice_to_value(5)),
+        n_brick(dice_to_value(8) + dice_to_value(2)),
+        n_wheat(0),
+        n_wool(0),
+        n_ore(0)
+      );
+    case 6:
+      return resources(
+        n_wood(0),
+        n_brick(0),
+        n_wheat(0),
+        n_wool(dice_to_value(4) + dice_to_value(12)),
+        n_ore(dice_to_value(8))
+      );
+    case 7:
+      return resources(
+        n_wood(dice_to_value(3)),
+        n_brick(dice_to_value(8)),
+        n_wheat(0),
+        n_wool(dice_to_value(9)),
+        n_ore(0)
+      );
+    case 8:
+      return resources(
+        n_wood(0),
+        n_brick(0),
+        n_wheat(dice_to_value(9)),
+        n_wool(dice_to_value(4) + dice_to_value(12)),
+        n_ore(0)
+      );
+    case 9:
+      return resources(
+        n_wood(dice_to_value(6)),
+        n_brick(0),
+        n_wheat(dice_to_value(9)),
+        n_wool(0),
+        n_ore(0)
+      );
+  }
+  assert(13275 == 7362377);
+  return resources();
 }
 
 /// The cost to build a road
@@ -105,6 +202,26 @@ int sum_positives(const resources& r)
   if (r.get_bricks().get() > 0) sum += r.get_bricks().get();
   if (r.get_wheats().get() > 0) sum += r.get_wheats().get();
   assert(sum >= 0);
+  return sum;
+}
+
+int trade_positives(
+  const resources& r,
+  const int ratio
+)
+{
+  std::vector<int> values  = {
+    r.get_woods().get(),
+    r.get_bricks().get(),
+    r.get_wheats().get(),
+    r.get_wools().get(),
+    r.get_ores().get()
+  };
+  int sum = 0;
+  for (int& i: values)
+  {
+    if (i > 0) sum += (i / ratio);
+  }
   return sum;
 }
 
@@ -207,6 +324,28 @@ void test_resources()
     const int n_turns = calc_n_turns(goal, income);
     assert(5 == n_turns);
   }
+  // Must be four of the same resources
+  {
+    const resources goal(
+      n_wood(1),
+      n_brick(0),
+      n_wheat(0),
+      n_wool(0),
+      n_ore(0)
+    );
+    // It will take four turns to get here,
+    // as one needs four resources of one kind
+    const resources income(
+      n_wood(0),
+      n_brick(1),
+      n_wheat(1),
+      n_wool(1),
+      n_ore(1)
+    );
+    const int n_turns = calc_n_turns(goal, income);
+    assert(4 == n_turns);
+
+  }
   // to_str
   {
     const resources r(
@@ -220,6 +359,23 @@ void test_resources()
     const std::string expected = "1 wood, 2 brick, 3 wheat, 4 wool, 5 ore";
     assert(created == expected);
   }
+  {
+    assert(dice_to_value( 2) == 1);
+    assert(dice_to_value( 3) == 2);
+    assert(dice_to_value( 4) == 3);
+    assert(dice_to_value( 5) == 4);
+    assert(dice_to_value( 6) == 5);
+    assert(dice_to_value( 8) == 5);
+    assert(dice_to_value( 9) == 4);
+    assert(dice_to_value(10) == 3);
+    assert(dice_to_value(11) == 2);
+    assert(dice_to_value(12) == 1);
+  }
+}
+
+bool operator>(const resources& lhs, const resources& rhs) noexcept
+{
+  return sum_positives(lhs) > sum_positives(rhs);
 }
 
 resources operator*(const int n, const resources& r) noexcept

@@ -48,9 +48,15 @@ std::vector<strategy> get_all_strategies(
   const state& begin
 );
 
+/// Convert each vector of actions to a unique integer
+int to_int(const strategy& strategy);
+
 /// Play the actions until a win condition is reached
 /// Return the strategy with the (shorter) set of actions
 strategy play_actions(const state& begin, const actions& a);
+
+/// Test the strategy class and free functions
+void test_strategy();
 
 std::ostream& operator<<(std::ostream& os, const strategy& s);
 bool operator<(const strategy& lhs, const strategy& rhs);

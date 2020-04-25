@@ -66,6 +66,8 @@ std::vector<state> get_win_states() noexcept;
 /// Is the state winning?
 bool has_won(const state& s) noexcept;
 
+bool is_valid(const state& s) noexcept;
+
 /// Test the state
 void test_state();
 

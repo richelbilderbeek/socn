@@ -32,18 +32,27 @@ std::vector<strategy> get_all_strategies(
   const state& begin
 )
 {
+  // Use a set to remove duplicates
   std::set<strategy> strategies;
   for (const actions& as: get_all_actionses())
   {
-    strategies.insert(play_actions(begin, as));
+    try
+    {
+      // Will throw if the set of actions is impossible
+      const strategy valid_strategy = play_actions(begin, as);
+      assert(calc_n_turns(valid_strategy) > 0);
+      strategies.insert(valid_strategy);
+    }
+    catch (const std::logic_error&) {} // Happens if the actions are invalid
   }
 
   std::vector<strategy> results;
-  results.resize(strategies.size());
+  results.reserve(strategies.size());
   std::copy(
     std::begin(strategies), std::end(strategies),
     std::back_inserter(results)
   );
+  assert(strategies.size() == results.size());
   return results;
 }
 
@@ -123,6 +132,11 @@ std::vector<strategy> get_best_strategies(
   return strategies;
 }
 
+int to_int(const strategy& strategy)
+{
+  return to_int(strategy.get_actions());
+}
+
 strategy play_actions(const state& begin, const actions& raw_actions)
 {
   state cur_state = begin;
@@ -130,7 +144,7 @@ strategy play_actions(const state& begin, const actions& raw_actions)
 
   for (const action& a: raw_actions.get())
   {
-    if (has_won(cur_state)) return strategy(begin, actions_played);
+    if (has_won(cur_state)) break;
 
     // Play next acion
     actions_played.push_back(a);
@@ -138,13 +152,6 @@ strategy play_actions(const state& begin, const actions& raw_actions)
   }
   assert(has_won(cur_state));
   return strategy(begin, actions_played);
-}
-
-void test_strategy()
-{
-
-  //strategy play_actions(const state& begin, const actions& raw_actions)
-
 }
 
 std::ostream& operator<<(std::ostream& os, const strategy& s)
@@ -160,5 +167,29 @@ std::ostream& operator<<(std::ostream& os, const strategy& s)
 
 bool operator<(const strategy& lhs, const strategy& rhs)
 {
-  return calc_n_turns(lhs) < calc_n_turns(rhs);
+  return to_int(lhs) < to_int(rhs);
+}
+
+void test_strategy()
+{
+  // calc_n_turns
+  {
+    const strategy s(
+      get_richels_favorite_begin_state(),
+      { action::buy_dev_point }
+    );
+    const int expected = 2;
+    const int created = calc_n_turns(s);
+    assert(expected == created);
+  }
+  {
+    const strategy s(
+      get_richels_favorite_begin_state(),
+      { action::buy_dev_point, action::buy_dev_point }
+    );
+    const int expected = 4;
+    const int created = calc_n_turns(s);
+    assert(expected == created);
+  }
+
 }

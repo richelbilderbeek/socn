@@ -1,9 +1,12 @@
 #include "action.h"
 
+#include "actions.h"
 #include "resources.h"
 #include "state.h"
 
+#include <algorithm>
 #include <cassert>
+#include <cmath>
 #include <iostream>
 
 int calc_n_turns(const state& s, const action& a)
@@ -65,6 +68,42 @@ std::vector<action> get_actions(const state& s)
     actions.push_back(action::buy_dev_point);
   }
   return actions;
+}
+
+int to_int(const std::vector<action>& actions)
+{
+  // These must be the actions values
+  static_assert(static_cast<int>(action::build_village) == 0);
+  static_assert(static_cast<int>(action::build_city) == 1);
+  static_assert(static_cast<int>(action::build_trade_route) == 2);
+  static_assert(static_cast<int>(action::buy_knight_force) == 3);
+  static_assert(static_cast<int>(action::buy_dev_point) == 4);
+
+  // Use the reverse of the actions, to make the last actions
+  // be the lower digits
+  std::vector<action> rev_actions;
+  std::reverse_copy(std::begin(actions), std::end(actions),
+    std::back_inserter(rev_actions)
+  );
+  int sum = 0;
+  const int number_system = get_n_actions();
+  const int n_actions = static_cast<int>(rev_actions.size());
+
+  for (int i = 0; i != n_actions; ++i)
+  {
+    const int digit_multiplier{
+      static_cast<int>(
+        std::pow(number_system, i)
+      )
+    };
+    const int this_digit{
+      1 + static_cast<int>(rev_actions[static_cast<size_t>(i)])
+    };
+    assert(this_digit >= 0);
+    assert(this_digit <= 5);
+    sum += (digit_multiplier * this_digit);
+  }
+  return sum;
 }
 
 std::string to_str(const action& a) noexcept
@@ -166,5 +205,20 @@ void test_action()
     const state a(1, 1, true, false, 0, income);
     const int n = calc_n_turns(a, action::buy_knight_force);
     assert(n == 6);
+  }
+  {
+    static_assert(static_cast<int>(action::build_village) == 0);
+    static_assert(static_cast<int>(action::build_city) == 1);
+    static_assert(static_cast<int>(action::build_trade_route) == 2);
+    static_assert(static_cast<int>(action::buy_knight_force) == 3);
+    static_assert(static_cast<int>(action::buy_dev_point) == 4);
+    assert(to_int( { action::build_village} ) == 1);
+    assert(to_int( { action::build_city} ) == 2);
+    assert(to_int( { action::build_trade_route} ) == 3);
+    assert(to_int( { action::buy_knight_force} ) == 4);
+    assert(to_int( { action::buy_dev_point} ) == 5);
+    assert(to_int( { action::build_village, action::build_village} ) == 6);
+    assert(to_int( { action::build_village, action::build_city} ) == 7);
+    assert(to_int( { action::build_village, action::build_village, action::build_village} ) == 31);
   }
 }
