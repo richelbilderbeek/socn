@@ -24,6 +24,8 @@ int main()
 {
   test();
 
+  std::cout << get_all_actionses().size() << '\n';
+
   if (1 == 2)
   {
     const state begin;

@@ -17,6 +17,8 @@ enum class action
   buy_dev_point
 };
 
+constexpr int get_n_actions() { return 5; }
+
 /// Calculate the expected number of turns to do an action
 int calc_n_turns(const state& s, const action& a);
 
