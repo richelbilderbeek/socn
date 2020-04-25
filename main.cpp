@@ -27,14 +27,15 @@ void test()
 int main()
 {
   test();
-  #ifndef NDEBUG
+
   const state begin = get_richels_favorite_begin_state();
+  const auto all_strategies = get_all_strategies(begin);
+  const int top_n = 10;
+
   std::cout << "=====================================================\n";
   std::cout << "= ALL STRATEGIES                                    =\n";
-  std::cout << "=====================================================\n";
-  const auto all_strategies = get_all_strategies(begin);
-  //const auto n_strategies = all_strategies.size();
-  for (auto i = 0u; i != 10; ++i)
+  std::cout << "=====================================================\n";  
+  for (auto i = 0u; i != top_n; ++i)
   {
     std::cout << "[" << i << "] "
       << calc_n_turns(all_strategies[i])
@@ -47,14 +48,15 @@ int main()
   std::cout << "= WORST STRATEGIES                                  =\n";
   std::cout << "=====================================================\n";
   auto worst_strategies = all_strategies;
-  std::sort(
+  std::partial_sort(
     std::begin(worst_strategies), std::end(worst_strategies),
+    std::begin(worst_strategies) + top_n,
     [](const strategy& lhs, const strategy& rhs)
     {
       return calc_n_turns(lhs) > calc_n_turns(rhs);
     }
   );
-  for (auto i = 0u; i != 10; ++i)
+  for (auto i = 0u; i != top_n; ++i)
   {
     std::cout << "[" << i << "] "
       << calc_n_turns(worst_strategies[i])
@@ -67,8 +69,9 @@ int main()
   std::cout << "= BEST STRATEGIES                                   =\n";
   std::cout << "=====================================================\n";
   auto best_strategies = all_strategies;
-  std::sort(
+  std::partial_sort(
     std::begin(best_strategies), std::end(best_strategies),
+    std::begin(best_strategies) + top_n,
     [](const strategy& lhs, const strategy& rhs)
     {
       assert(calc_n_turns(lhs) > 0);
@@ -76,7 +79,7 @@ int main()
       return calc_n_turns(lhs) < calc_n_turns(rhs);
     }
   );
-  for (auto i = 0u; i != 10; ++i)
+  for (auto i = 0u; i != top_n; ++i)
   {
     std::cout << "[" << i << "] "
       << calc_n_turns(all_strategies[i])
@@ -84,6 +87,5 @@ int main()
       << '\n'
     ;
   }
-  #endif
   std::cout << "Done\n";
 }
