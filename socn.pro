@@ -6,7 +6,8 @@ SOURCES += \
     n_brick.cpp \
     n_wheat.cpp \
     n_wool.cpp \
-    n_ore.cpp
+    n_ore.cpp \
+    strategy.cpp
 
 HEADERS += \
     state.h \
@@ -15,4 +16,5 @@ HEADERS += \
     n_brick.h \
     n_wheat.h \
     n_wool.h \
-    n_ore.h
+    n_ore.h \
+    strategy.h

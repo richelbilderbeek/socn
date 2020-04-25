@@ -1,6 +1,7 @@
 #ifndef STATE_H
 #define STATE_H
 
+#include <iosfwd>
 #include <vector>
 #include "resources.h"
 
@@ -64,5 +65,6 @@ bool has_won(const state& s) noexcept;
 /// Test the state
 void test_state();
 
+std::ostream& operator<<(std::ostream& os, const state& s);
 
 #endif // STATE_H

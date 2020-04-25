@@ -198,3 +198,15 @@ resources operator-(const resources& lhs, const resources& rhs) noexcept
     lhs.get_ores() - rhs.get_ores()
   );
 }
+
+std::ostream& operator<<(std::ostream& os, const resources& r)
+{
+  os
+    << "" << r.get_woods()
+    << ", " << r.get_bricks()
+    << ", " << r.get_wheats()
+    << ", " << r.get_wools()
+    << ", " << r.get_ores()
+  ;
+  return os;
+}

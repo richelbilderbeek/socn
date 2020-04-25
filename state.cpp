@@ -2,6 +2,7 @@
 
 #include <algorithm>
 #include <cassert>
+#include <iostream>
 
 state::state(
   const int n_villages,
@@ -261,4 +262,17 @@ void test_state()
     const std::vector<int> ns = calc_n_turns(start, win_states);
     assert(ns.size() == 141);
   }
+}
+
+std::ostream& operator<<(std::ostream& os, const state& s)
+{
+  os
+    << "income: " << s.get_income()
+    << "n_villages: " << s.get_n_villages()
+    << "n_cities: " << s.get_n_cities()
+    << "trade_route: " << s.get_has_longest_road()
+    << "knight force: " << s.get_has_biggest_knight_force()
+    << "n_dev_points: " << s.get_n_development_points()
+  ;
+  return os;
 }

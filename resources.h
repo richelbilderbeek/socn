@@ -7,6 +7,8 @@
 #include "n_wool.h"
 #include "n_ore.h"
 
+#include <iostream>
+
 class resources
 {
 public:
@@ -61,5 +63,6 @@ resources operator*(const int n, const resources& r) noexcept;
 
 resources operator+(const resources& lhs, const resources& rhs) noexcept;
 resources operator-(const resources& lhs, const resources& rhs) noexcept;
+std::ostream& operator<<(std::ostream& os, const resources& r);
 
 #endif // RESOURCES_H
