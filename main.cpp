@@ -26,9 +26,8 @@ void test()
 
 int main()
 {
-  #ifndef NDEBUG
   test();
-  #else
+  #ifndef NDEBUG
   const state begin = get_richels_favorite_begin_state();
   std::cout << "=====================================================\n";
   std::cout << "= ALL STRATEGIES                                    =\n";
