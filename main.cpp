@@ -3,6 +3,7 @@
 #include "resources.h"
 #include "state.h"
 #include "strategy.h"
+#include "tile.h"
 
 #include <algorithm>
 #include <cassert>
@@ -18,6 +19,8 @@ void test()
   test_n_wool();
   test_resources();
 
+  test_tile();
+
   test_action();
   test_actions();
   test_state();
@@ -27,6 +30,7 @@ void test()
 int main()
 {
   test();
+  assert(1 == 2);
 
   const state begin = get_richels_favorite_begin_state();
   const auto all_strategies = get_all_strategies(begin);

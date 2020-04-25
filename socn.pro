@@ -11,7 +11,9 @@ SOURCES += \
     n_ore.cpp \
     strategy.cpp \
     action.cpp \
-    actions.cpp
+    actions.cpp \
+    map.cpp \
+    tile.cpp
 
 HEADERS += \
     state.h \
@@ -23,4 +25,6 @@ HEADERS += \
     n_ore.h \
     strategy.h \
     action.h \
-    actions.h
+    actions.h \
+    map.h \
+    tile.h
