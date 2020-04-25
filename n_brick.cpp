@@ -1,6 +1,16 @@
 #include "n_brick.h"
 
+#include <cassert>
 #include <iostream>
+#include <string>
+#include <sstream>
+
+std::string to_str(const n_brick& r) noexcept
+{
+  std::stringstream s;
+  s << r.get() << " brick";
+  return s.str();
+}
 
 bool operator==(const n_brick& lhs, const n_brick& rhs) noexcept
 {
@@ -24,6 +34,11 @@ n_brick operator-(const n_brick& lhs, const n_brick& rhs) noexcept
 
 std::ostream& operator<<(std::ostream& os, const n_brick& r)
 {
-  os << r.get() << " brick";
+  os << to_str(r);
   return os;
+}
+
+void test_n_brick()
+{
+  assert(to_str(n_brick(1)) == std::string("1 brick"));
 }

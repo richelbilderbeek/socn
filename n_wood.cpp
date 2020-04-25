@@ -1,6 +1,16 @@
 #include "n_wood.h"
 
+#include <cassert>
 #include <iostream>
+#include <string>
+#include <sstream>
+
+std::string to_str(const n_wood& r) noexcept
+{
+  std::stringstream s;
+  s << r.get() << " wood";
+  return s.str();
+}
 
 bool operator==(const n_wood& lhs, const n_wood& rhs) noexcept
 {
@@ -24,6 +34,11 @@ n_wood operator-(const n_wood& lhs, const n_wood& rhs) noexcept
 
 std::ostream& operator<<(std::ostream& os, const n_wood& r)
 {
-  os << r.get() << " wood";
+  os << to_str(r);
   return os;
+}
+
+void test_n_wood()
+{
+  assert(to_str(n_wood(1)) == std::string("1 wood"));
 }

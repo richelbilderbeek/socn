@@ -6,6 +6,11 @@
 
 void test()
 {
+  test_n_brick();
+  test_n_ore();
+  test_n_wheat();
+  test_n_wood();
+  test_n_wool();
   test_resources();
   test_state();
 }

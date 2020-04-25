@@ -106,6 +106,40 @@ int sum_positives(const resources& r)
   return sum;
 }
 
+resources operator+(const resources& lhs, const resources& rhs) noexcept
+{
+  return resources(
+    lhs.get_woods() + rhs.get_woods(),
+    lhs.get_bricks() + rhs.get_bricks(),
+    lhs.get_wheats() + rhs.get_wheats(),
+    lhs.get_wools() + rhs.get_wools(),
+    lhs.get_ores() + rhs.get_ores()
+  );
+}
+
+resources operator-(const resources& lhs, const resources& rhs) noexcept
+{
+  return resources(
+    lhs.get_woods() - rhs.get_woods(),
+    lhs.get_bricks() - rhs.get_bricks(),
+    lhs.get_wheats() - rhs.get_wheats(),
+    lhs.get_wools() - rhs.get_wools(),
+    lhs.get_ores() - rhs.get_ores()
+  );
+}
+
+std::ostream& operator<<(std::ostream& os, const resources& r)
+{
+  os
+    << "" << r.get_woods()
+    << ", " << r.get_bricks()
+    << ", " << r.get_wheats()
+    << ", " << r.get_wools()
+    << ", " << r.get_ores()
+  ;
+  return os;
+}
+
 void test_resources()
 {
   //Road: 1 wood, 1 brick
@@ -175,38 +209,4 @@ resources operator*(const int n, const resources& r) noexcept
     r.get_wools() * n,
     r.get_ores() * n
   );
-}
-
-resources operator+(const resources& lhs, const resources& rhs) noexcept
-{
-  return resources(
-    lhs.get_woods() + rhs.get_woods(),
-    lhs.get_bricks() + rhs.get_bricks(),
-    lhs.get_wheats() + rhs.get_wheats(),
-    lhs.get_wools() + rhs.get_wools(),
-    lhs.get_ores() + rhs.get_ores()
-  );
-}
-
-resources operator-(const resources& lhs, const resources& rhs) noexcept
-{
-  return resources(
-    lhs.get_woods() - rhs.get_woods(),
-    lhs.get_bricks() - rhs.get_bricks(),
-    lhs.get_wheats() - rhs.get_wheats(),
-    lhs.get_wools() - rhs.get_wools(),
-    lhs.get_ores() - rhs.get_ores()
-  );
-}
-
-std::ostream& operator<<(std::ostream& os, const resources& r)
-{
-  os
-    << "" << r.get_woods()
-    << ", " << r.get_bricks()
-    << ", " << r.get_wheats()
-    << ", " << r.get_wools()
-    << ", " << r.get_ores()
-  ;
-  return os;
 }

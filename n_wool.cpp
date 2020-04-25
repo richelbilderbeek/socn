@@ -1,6 +1,16 @@
 #include "n_wool.h"
 
+#include <cassert>
 #include <iostream>
+#include <string>
+#include <sstream>
+
+std::string to_str(const n_wool& r) noexcept
+{
+  std::stringstream s;
+  s << r.get() << " wool";
+  return s.str();
+}
 
 bool operator==(const n_wool& lhs, const n_wool& rhs) noexcept
 {
@@ -24,6 +34,11 @@ n_wool operator-(const n_wool& lhs, const n_wool& rhs) noexcept
 
 std::ostream& operator<<(std::ostream& os, const n_wool& r)
 {
-  os << r.get() << " wool";
+  os << to_str(r);
   return os;
+}
+
+void test_n_wool()
+{
+  assert(to_str(n_wool(1)) == std::string("1 wool"));
 }

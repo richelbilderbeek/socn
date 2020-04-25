@@ -1,6 +1,16 @@
 #include "n_ore.h"
 
+#include <cassert>
 #include <iostream>
+#include <string>
+#include <sstream>
+
+std::string to_str(const n_ore& r) noexcept
+{
+  std::stringstream s;
+  s << r.get() << " ore";
+  return s.str();
+}
 
 bool operator==(const n_ore& lhs, const n_ore& rhs) noexcept
 {
@@ -24,6 +34,11 @@ n_ore operator-(const n_ore& lhs, const n_ore& rhs) noexcept
 
 std::ostream& operator<<(std::ostream& os, const n_ore& r)
 {
-  os << r.get() << " ore";
+  os << to_str(r);
   return os;
+}
+
+void test_n_ore()
+{
+  assert(to_str(n_ore(1)) == std::string("1 ore"));
 }
