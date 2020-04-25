@@ -1,11 +1,17 @@
 #include "strategy.h"
 
+#include "actions.h"
+
 #include <algorithm>
 #include <cassert>
 #include <iostream>
+#include <set>
 
-strategy::strategy(const state& begin)
-  : m_begin{begin}
+strategy::strategy(
+  const state& begin,
+  const std::vector<action>& actions)
+  : m_begin{begin},
+    m_actions{actions}
 {
 
 }
@@ -20,6 +26,25 @@ int calc_n_turns(const strategy& s)
     cur_state = to_next_state(cur_state, action);
   }
   return sum_n_turns;
+}
+
+std::vector<strategy> get_all_strategies(
+  const state& begin
+)
+{
+  std::set<strategy> strategies;
+  for (const actions& as: get_all_actionses())
+  {
+    strategies.insert(play_actions(begin, as));
+  }
+
+  std::vector<strategy> results;
+  results.resize(strategies.size());
+  std::copy(
+    std::begin(strategies), std::end(strategies),
+    std::back_inserter(results)
+  );
+  return results;
 }
 
 std::vector<strategy> get_all_strategies(
@@ -98,9 +123,28 @@ std::vector<strategy> get_best_strategies(
   return strategies;
 }
 
+strategy play_actions(const state& begin, const actions& raw_actions)
+{
+  state cur_state = begin;
+  std::vector<action> actions_played;
+
+  for (const action& a: raw_actions.get())
+  {
+    if (has_won(cur_state)) return strategy(begin, actions_played);
+
+    // Play next acion
+    actions_played.push_back(a);
+    cur_state = to_next_state(cur_state, a);
+  }
+  assert(has_won(cur_state));
+  return strategy(begin, actions_played);
+}
 
 void test_strategy()
 {
+
+  //strategy play_actions(const state& begin, const actions& raw_actions)
+
 }
 
 std::ostream& operator<<(std::ostream& os, const strategy& s)

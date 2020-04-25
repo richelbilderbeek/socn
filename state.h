@@ -57,6 +57,9 @@ int calc_n_turns(const state& a, const state& b);
 /// the first to each of the second states
 std::vector<int> calc_n_turns(const state& from, const std::vector<state>& to);
 
+/// Get Richel's favorite begin state
+state get_richels_favorite_begin_state();
+
 /// Get all the possible win states
 std::vector<state> get_win_states() noexcept;
 

@@ -76,6 +76,35 @@ int count_points(const state& s) noexcept
   ;
 }
 
+state get_richels_favorite_begin_state()
+{
+  // Resource | Dice  | Income
+  // Resource | value | value
+  // =============================
+  // Wheat    | 4     | 3
+  // Wood     | 5     | 4
+  // Wood     | 6     | 5
+  // =============================
+  // Ore      | 5     | 2
+  // Brick    | 10    | 3
+  // Wheat    | 6     | 5
+  const resources income(
+      n_wood(5 + 4),
+      n_brick(3),
+      n_wheat(3 + 5),
+      n_wool(0),
+      n_ore(2)
+  );
+  return state(
+    2,
+    0,
+    false,
+    false,
+    0,
+    income
+  );
+}
+
 std::vector<state> get_win_states() noexcept
 {
   std::vector<state> all_states;

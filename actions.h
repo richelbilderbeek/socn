@@ -14,8 +14,9 @@ class actions
 public:
   actions(const std::array<action, get_n_actions_to_win_the_game()>& actions);
 
-private:
+  const auto& get() const noexcept { return m_actions; }
 
+private:
   std::array<action, get_n_actions_to_win_the_game()> m_actions;
 };
 
@@ -26,7 +27,8 @@ private:
 ///The number of digits amounts to the number of actions needed to win the game for sure
 std::array<action, get_n_actions_to_win_the_game()> int_to_raw_actions(int i);
 
-/// Get all the valid sets of actions
+/// Get all the valid sets of actions, calculate this at runtime
+/// These are 81102 for 8 actions
 std::vector<actions> get_all_actionses();
 
 bool is_valid(const std::array<action, get_n_actions_to_win_the_game()>& actions);

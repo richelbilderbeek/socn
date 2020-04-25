@@ -24,11 +24,14 @@ int main()
 {
   test();
 
-  std::cout << get_all_actionses().size() << '\n';
+  const state begin = get_richels_favorite_begin_state();
+  std::cout
+    << "All sets of actions: " << get_all_actionses().size() << '\n'
+    << "All strategies: " << get_all_strategies(begin).size() << '\n'
+  ;
 
   if (1 == 2)
   {
-    const state begin;
     const std::vector<strategy> best_strategies{
       get_best_strategies(begin, 1)
     };

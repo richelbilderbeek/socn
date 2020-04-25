@@ -1,6 +1,8 @@
 #ifndef STRATEGY_H
 #define STRATEGY_H
 
+class actions;
+
 #include "action.h"
 #include "state.h"
 
@@ -11,7 +13,10 @@
 class strategy
 {
 public:
-  strategy(const state& begin = state());
+  strategy(
+    const state& begin = state(),
+    const std::vector<action>& actions = {}
+  );
   const auto& get_actions() const noexcept { return m_actions; }
   const auto& get_begin() const noexcept { return m_begin; }
 
@@ -38,11 +43,14 @@ std::vector<strategy> get_best_strategies(
   const int n
 );
 
-/// Get all strategies to go from begin to end
+/// Get all strategies to go from begin to a win condition
 std::vector<strategy> get_all_strategies(
-  const state& begin,
-  const state& end
+  const state& begin
 );
+
+/// Play the actions until a win condition is reached
+/// Return the strategy with the (shorter) set of actions
+strategy play_actions(const state& begin, const actions& a);
 
 std::ostream& operator<<(std::ostream& os, const strategy& s);
 bool operator<(const strategy& lhs, const strategy& rhs);
