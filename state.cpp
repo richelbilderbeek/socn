@@ -107,15 +107,69 @@ bool has_won(const state& s) noexcept
   return count_points(s) >= 10;
 }
 
+state to_next_state(const state& s, const action& a)
+{
+  switch(a)
+  {
+    case action::build_village:
+      return state(
+        s.get_n_villages() + 1,
+        s.get_n_cities(),
+        s.get_has_longest_road(),
+        s.get_has_biggest_knight_force(),
+        s.get_n_development_points(),
+        s.get_income() //TODO: income should increase
+      );
+    case action::build_city:
+      return state(
+        s.get_n_villages() - 1,
+        s.get_n_cities() + 1,
+        s.get_has_longest_road(),
+        s.get_has_biggest_knight_force(),
+        s.get_n_development_points(),
+        s.get_income() //TODO: income should increase
+      );
+    case action::build_trade_route:
+      return state(
+        s.get_n_villages(),
+        s.get_n_cities(),
+        true,
+        s.get_has_biggest_knight_force(),
+        s.get_n_development_points(),
+        s.get_income()
+      );
+    case action::buy_knight_force:
+      return state(
+        s.get_n_villages(),
+        s.get_n_cities(),
+        s.get_has_longest_road(),
+        true,
+        s.get_n_development_points(),
+        s.get_income()
+      );
+    case action::buy_dev_point:
+      return state(
+        s.get_n_villages(),
+        s.get_n_cities(),
+        s.get_has_longest_road(),
+        s.get_has_biggest_knight_force(),
+        s.get_n_development_points() + 1,
+        s.get_income()
+      );
+  }
+  assert(37462374628 == 237366);
+  return state();
+}
+
 std::ostream& operator<<(std::ostream& os, const state& s)
 {
   os
     << "income: " << s.get_income()
-    << "n_villages: " << s.get_n_villages()
-    << "n_cities: " << s.get_n_cities()
-    << "trade_route: " << s.get_has_longest_road()
-    << "knight force: " << s.get_has_biggest_knight_force()
-    << "n_dev_points: " << s.get_n_development_points()
+    << ", n_villages: " << s.get_n_villages()
+    << ", n_cities: " << s.get_n_cities()
+    << ", trade_route: " << s.get_has_longest_road()
+    << ", knight force: " << s.get_has_biggest_knight_force()
+    << ", n_dev_points: " << s.get_n_development_points()
   ;
   return os;
 }

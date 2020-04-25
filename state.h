@@ -3,6 +3,7 @@
 
 #include <iosfwd>
 #include <vector>
+#include "action.h"
 #include "resources.h"
 
 class state
@@ -64,6 +65,9 @@ bool has_won(const state& s) noexcept;
 
 /// Test the state
 void test_state();
+
+/// Go to the next state by taking an action
+state to_next_state(const state& s, const action& a);
 
 std::ostream& operator<<(std::ostream& os, const state& s);
 

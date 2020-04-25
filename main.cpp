@@ -1,5 +1,7 @@
 #include <vector>
 #include <iostream>
+#include "actions.h"
+#include "action.h"
 #include "resources.h"
 #include "state.h"
 #include "strategy.h"
@@ -12,6 +14,9 @@ void test()
   test_n_wood();
   test_n_wool();
   test_resources();
+
+  test_action();
+  test_actions();
   test_state();
 }
 

@@ -4,21 +4,20 @@
 #include <cassert>
 #include <iostream>
 
-strategy::strategy(const std::vector<state>& states)
-  : m_states{states}
+strategy::strategy(const state& begin)
+  : m_begin{begin}
 {
 
 }
 
 int calc_n_turns(const strategy& s)
 {
-  const auto& states = s.get_states();
-  const int n_states = static_cast<int>(states.size());
-  const int n_calcs = n_states - 1;
+  auto cur_state = s.get_begin();
   int sum_n_turns = 0;
-  for (int i = 0; i != n_calcs; ++i)
+  for (const auto& action: s.get_actions())
   {
-    sum_n_turns += calc_n_turns(states[i], states[i + 1]);
+    sum_n_turns += calc_n_turns(cur_state, action);
+    cur_state = to_next_state(cur_state, action);
   }
   return sum_n_turns;
 }
@@ -44,9 +43,9 @@ std::vector<strategy> get_all_strategies(
     && begin.get_n_development_points() == end.get_n_development_points()
     && begin.get_has_biggest_knight_force() == end.get_has_biggest_knight_force()
   ) {
-    return {
-      strategy( { begin, end } )
-    };
+    //Already won the game
+    assert(23748 == 7357615);
+    return {};
   }
   assert(652361 == 64637582);
   return {};
@@ -106,11 +105,11 @@ void test_strategy()
 
 std::ostream& operator<<(std::ostream& os, const strategy& s)
 { 
-  const auto states = s.get_states();
-  const auto n_states = states.size();
-  for (auto i = 0u; i != n_states; ++i)
+  const auto actions = s.get_actions();
+  const auto n_actions = actions.size();
+  for (auto i = 0u; i != n_actions; ++i)
   {
-    os << i << ": " << states[i] << '\n';
+    os << i << ": " << actions[i] << '\n';
   }
   return os;
 }
