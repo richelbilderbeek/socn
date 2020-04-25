@@ -17,7 +17,7 @@ bool operator==(const n_wood& lhs, const n_wood& rhs) noexcept
   return lhs.get() == rhs.get();
 }
 
-n_wood operator*(const n_wood& w, const int n) noexcept
+n_wood operator*(const n_wood& w, const double n) noexcept
 {
   return n_wood(w.get() * n);
 }

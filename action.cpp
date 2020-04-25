@@ -154,7 +154,7 @@ void test_action()
     );
     const state begin(1, 0, false, false, 0, income);
     const int n = calc_n_turns(begin, action::build_village);
-    assert(n == 8 * 4);
+    assert(n == 36 * 8 * 4);
   }
   // Calculate the number of turns to build a
   // city.
@@ -172,7 +172,7 @@ void test_action()
     );
     const state a(1, 1, false, false, 0, income);
     const int n = calc_n_turns(a, action::build_city);
-    assert(n == 11);
+    assert(n == 11 * 36);
   }
   // Calculate the number of turns to build a
   // the largest trade route
@@ -188,7 +188,8 @@ void test_action()
     );
     const state a(1, 1, false, false, 0, income);
     const int n = calc_n_turns(a, action::build_trade_route);
-    assert(n == 3);
+    // Less than 3 * 36, due to averaging out
+    assert(n == 90);
   }
   // Calculate the number of turns to build a
   // the largest knight force
@@ -204,7 +205,7 @@ void test_action()
     );
     const state a(1, 1, true, false, 0, income);
     const int n = calc_n_turns(a, action::buy_knight_force);
-    assert(n == 6);
+    assert(n == 6 * 36);
   }
   {
     static_assert(static_cast<int>(action::build_village) == 0);

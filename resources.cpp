@@ -26,8 +26,11 @@ int calc_n_turns(
   const resources& income
 )
 {
-  for (int i = 1; i != 100; ++i) {
-    const resources difference = (i * income) - goal;
+  for (int i = 1; i != 10000; ++i) {
+    // Times 36 as the income is per 6 * 6 dice throws
+    const resources difference{
+      ((static_cast<double>(i) / 36.0) * income) - goal
+    };
     const int n_negative = sum_negatives(difference);
     const int n_tradable = trade_positives(difference, 4);
     if (n_tradable >= n_negative) return i;
@@ -309,7 +312,7 @@ void test_resources()
       n_ore(1)
     );
     const int n_turns = calc_n_turns(goal, income);
-    assert(8 == n_turns);
+    assert(288 == n_turns);
   }
   // Pay a road from wood
   {
@@ -322,7 +325,7 @@ void test_resources()
       n_ore(0)
     );
     const int n_turns = calc_n_turns(goal, income);
-    assert(5 == n_turns);
+    assert(180 == n_turns);
   }
   // Must be four of the same resources
   {
@@ -343,7 +346,7 @@ void test_resources()
       n_ore(1)
     );
     const int n_turns = calc_n_turns(goal, income);
-    assert(4 == n_turns);
+    assert(4 * 36 == n_turns);
 
   }
   // to_str
@@ -378,7 +381,7 @@ bool operator>(const resources& lhs, const resources& rhs) noexcept
   return sum_positives(lhs) > sum_positives(rhs);
 }
 
-resources operator*(const int n, const resources& r) noexcept
+resources operator*(const double n, const resources& r) noexcept
 {
   return resources(
     r.get_woods() * n,

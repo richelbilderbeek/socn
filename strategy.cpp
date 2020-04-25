@@ -178,7 +178,8 @@ void test_strategy()
       get_richels_favorite_begin_state(),
       { action::buy_dev_point }
     );
-    const int expected = 2;
+    // Less than 2 * 36, due to averaging out
+    const int expected = 48;
     const int created = calc_n_turns(s);
     assert(expected == created);
   }
@@ -187,7 +188,8 @@ void test_strategy()
       get_richels_favorite_begin_state(),
       { action::buy_dev_point, action::buy_dev_point }
     );
-    const int expected = 4;
+    // Less than 4 * 36, due to averaging out
+    const int expected = 96;
     const int created = calc_n_turns(s);
     assert(expected == created);
   }

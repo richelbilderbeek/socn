@@ -15,7 +15,7 @@ private:
 std::string to_str(const n_wheat& r) noexcept;
 
 bool operator==(const n_wheat& lhs, const n_wheat& rhs) noexcept;
-n_wheat operator*(const n_wheat& w, const int n) noexcept;
+n_wheat operator*(const n_wheat& w, const double n) noexcept;
 n_wheat operator+(const n_wheat& lhs, const n_wheat& rhs) noexcept;
 n_wheat operator-(const n_wheat& lhs, const n_wheat& rhs) noexcept;
 std::ostream& operator<<(std::ostream& os, const n_wheat& r);

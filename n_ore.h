@@ -15,7 +15,7 @@ private:
 std::string to_str(const n_ore& r) noexcept;
 
 bool operator==(const n_ore& lhs, const n_ore& rhs) noexcept;
-n_ore operator*(const n_ore& w, const int n) noexcept;
+n_ore operator*(const n_ore& w, const double n) noexcept;
 n_ore operator+(const n_ore& lhs, const n_ore& rhs) noexcept;
 n_ore operator-(const n_ore& lhs, const n_ore& rhs) noexcept;
 std::ostream& operator<<(std::ostream& os, const n_ore& r);

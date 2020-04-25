@@ -15,7 +15,7 @@ private:
 std::string to_str(const n_brick& r) noexcept;
 
 bool operator==(const n_brick& lhs, const n_brick& rhs) noexcept;
-n_brick operator*(const n_brick& w, const int n) noexcept;
+n_brick operator*(const n_brick& w, const double n) noexcept;
 n_brick operator+(const n_brick& lhs, const n_brick& rhs) noexcept;
 n_brick operator-(const n_brick& lhs, const n_brick& rhs) noexcept;
 std::ostream& operator<<(std::ostream& os, const n_brick& r);

@@ -295,7 +295,7 @@ void test_state()
     const state a(1, 0, false, false, 0, income);
     const state b(2, 0, false, false, 0, income);
     const int n = calc_n_turns(a, b);
-    assert(n == 8 * 4);
+    assert(n == 8 * 4 * 36);
   }
   // Calculate the number of turns to build a
   // city.
@@ -314,7 +314,7 @@ void test_state()
     const state a(1, 1, false, false, 0, income);
     const state b(0, 2, false, false, 0, income);
     const int n = calc_n_turns(a, b);
-    assert(n == 11);
+    assert(n == 11 * 36);
   }
   // Calculate the number of turns to build a
   // the largest trade route
@@ -331,7 +331,8 @@ void test_state()
     const state a(1, 1, false, false, 0, income);
     const state b(1, 1, true, false, 0, income);
     const int n = calc_n_turns(a, b);
-    assert(n == 3);
+    // Less than 3 * 36, due to averaging out
+    assert(n == 90);
   }
   // Calculate the number of turns to build a
   // the largest knight force
@@ -348,7 +349,7 @@ void test_state()
     const state a(1, 1, true, false, 0, income);
     const state b(1, 1, true, true, 0, income);
     const int n = calc_n_turns(a, b);
-    assert(n == 6);
+    assert(n == 6 * 36);
   }
   {
     const resources income(

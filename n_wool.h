@@ -15,7 +15,9 @@ private:
 std::string to_str(const n_wool& r) noexcept;
 
 bool operator==(const n_wool& lhs, const n_wool& rhs) noexcept;
-n_wool operator*(const n_wool& w, const int n) noexcept;
+
+/// Round
+n_wool operator*(const n_wool& w, const double n) noexcept;
 n_wool operator+(const n_wool& lhs, const n_wool& rhs) noexcept;
 n_wool operator-(const n_wool& lhs, const n_wool& rhs) noexcept;
 std::ostream& operator<<(std::ostream& os, const n_wool& r);

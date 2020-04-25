@@ -85,7 +85,7 @@ std::string to_str(const resources& r);
 void test_resources();
 
 bool operator>(const resources& lhs, const resources& rhs) noexcept;
-resources operator*(const int n, const resources& r) noexcept;
+resources operator*(const double n, const resources& r) noexcept;
 resources operator+(const resources& lhs, const resources& rhs) noexcept;
 resources operator-(const resources& lhs, const resources& rhs) noexcept;
 std::ostream& operator<<(std::ostream& os, const resources& r);

@@ -15,7 +15,7 @@ private:
 std::string to_str(const n_wood& r) noexcept;
 
 bool operator==(const n_wood& lhs, const n_wood& rhs) noexcept;
-n_wood operator*(const n_wood& w, const int n) noexcept;
+n_wood operator*(const n_wood& w, const double n) noexcept;
 n_wood operator+(const n_wood& lhs, const n_wood& rhs) noexcept;
 n_wood operator-(const n_wood& lhs, const n_wood& rhs) noexcept;
 std::ostream& operator<<(std::ostream& os, const n_wood& r);
