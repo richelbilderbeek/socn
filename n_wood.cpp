@@ -40,5 +40,10 @@ std::ostream& operator<<(std::ostream& os, const n_wood& r)
 
 void test_n_wood()
 {
+  {
+    std::stringstream s;
+    s << n_wood(1);
+    assert(s.str() == std::string("1 wood"));
+  }
   assert(to_str(n_wood(1)) == std::string("1 wood"));
 }

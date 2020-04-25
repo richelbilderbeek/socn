@@ -40,5 +40,10 @@ std::ostream& operator<<(std::ostream& os, const n_ore& r)
 
 void test_n_ore()
 {
+  {
+    std::stringstream s;
+    s << n_ore(1);
+    assert(s.str() == std::string("1 ore"));
+  }
   assert(to_str(n_ore(1)) == std::string("1 ore"));
 }

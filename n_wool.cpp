@@ -40,5 +40,10 @@ std::ostream& operator<<(std::ostream& os, const n_wool& r)
 
 void test_n_wool()
 {
+  {
+    std::stringstream s;
+    s << n_wool(1);
+    assert(s.str() == std::string("1 wool"));
+  }
   assert(to_str(n_wool(1)) == std::string("1 wool"));
 }

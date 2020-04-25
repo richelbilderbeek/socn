@@ -40,5 +40,10 @@ std::ostream& operator<<(std::ostream& os, const n_wheat& r)
 
 void test_n_wheat()
 {
+  {
+    std::stringstream s;
+    s << n_wheat(1);
+    assert(s.str() == std::string("1 wheat"));
+  }
   assert(to_str(n_wheat(1)) == std::string("1 wheat"));
 }

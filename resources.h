@@ -7,7 +7,7 @@
 #include "n_wool.h"
 #include "n_ore.h"
 
-#include <iostream>
+#include <iosfwd>
 
 class resources
 {
@@ -56,6 +56,9 @@ int sum_negatives(const resources& r);
 
 /// Sum the positives
 int sum_positives(const resources& r);
+
+/// Convert to string
+std::string to_str(const resources& r);
 
 void test_resources();
 

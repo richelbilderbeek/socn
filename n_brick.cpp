@@ -40,5 +40,10 @@ std::ostream& operator<<(std::ostream& os, const n_brick& r)
 
 void test_n_brick()
 {
+  {
+    std::stringstream s;
+    s << n_brick(1);
+    assert(s.str() == std::string("1 brick"));
+  }
   assert(to_str(n_brick(1)) == std::string("1 brick"));
 }

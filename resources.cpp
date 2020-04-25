@@ -2,6 +2,8 @@
 
 #include <cassert>
 #include <cmath>
+#include <iostream>
+#include <sstream>
 
 resources::resources(
   const n_wood woods,
@@ -106,6 +108,19 @@ int sum_positives(const resources& r)
   return sum;
 }
 
+std::string to_str(const resources& r)
+{
+  std::stringstream s;
+  s
+    << r.get_woods()
+    << ", " << r.get_bricks()
+    << ", " << r.get_wheats()
+    << ", " << r.get_wools()
+    << ", " << r.get_ores()
+  ;
+  return s.str();
+}
+
 resources operator+(const resources& lhs, const resources& rhs) noexcept
 {
   return resources(
@@ -130,13 +145,7 @@ resources operator-(const resources& lhs, const resources& rhs) noexcept
 
 std::ostream& operator<<(std::ostream& os, const resources& r)
 {
-  os
-    << "" << r.get_woods()
-    << ", " << r.get_bricks()
-    << ", " << r.get_wheats()
-    << ", " << r.get_wools()
-    << ", " << r.get_ores()
-  ;
+  os << to_str(r);
   return os;
 }
 
@@ -197,6 +206,19 @@ void test_resources()
     );
     const int n_turns = calc_n_turns(goal, income);
     assert(5 == n_turns);
+  }
+  // to_str
+  {
+    const resources r(
+      n_wood(1),
+      n_brick(2),
+      n_wheat(3),
+      n_wool(4),
+      n_ore(5)
+    );
+    const std::string created = to_str(r);
+    const std::string expected = "1 wood, 2 brick, 3 wheat, 4 wool, 5 ore";
+    assert(created == expected);
   }
 }
 
