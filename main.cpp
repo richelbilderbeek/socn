@@ -4,6 +4,7 @@
 #include "state.h"
 #include "strategy.h"
 #include "tile.h"
+#include "map.h"
 
 #include <algorithm>
 #include <cassert>
@@ -20,7 +21,7 @@ void test()
   test_resources();
 
   test_tile();
-
+  test_map();
   test_action();
   test_actions();
   test_state();

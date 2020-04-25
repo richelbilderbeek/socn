@@ -13,7 +13,8 @@ SOURCES += \
     action.cpp \
     actions.cpp \
     map.cpp \
-    tile.cpp
+    tile.cpp \
+    resource_type.cpp
 
 HEADERS += \
     state.h \
@@ -27,4 +28,5 @@ HEADERS += \
     action.h \
     actions.h \
     map.h \
-    tile.h
+    tile.h \
+    resource_type.h
