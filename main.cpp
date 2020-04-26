@@ -31,6 +31,10 @@ void test()
 int main()
 {
   test();
+
+  const map m;
+  std::clog << m << '\n';
+
   assert(1 == 2);
 
   const state begin = get_richels_favorite_begin_state();

@@ -3,6 +3,7 @@
 
 #include "tile.h"
 
+#include <iosfwd>
 #include <vector>
 
 // The island map
@@ -22,28 +23,6 @@ void test_map();
 
 std::vector<std::string> to_text(const map& m);
 
-/*
- 7 layers high
- 7 wide
- 24 rows
+std::ostream& operator<<(std::ostream& os, const map& m);
 
-so a tile may be 10 wide and high...
-
-
-
- 01234567890123456789
- +---------+---------
-0|  *****  |    **
-1| *     * |   *  *
-2|*       *|  *    *
-3| *     * | *      *
-4|  *****  | *      *
-5|           *      *
-6|            *    *
-7|             *  *
-8|              **
-9|
-
-
-*/
 #endif // MAP_H
