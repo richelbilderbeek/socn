@@ -13,7 +13,7 @@ map::map(
 
 std::vector<std::string> to_text(const map& m)
 {
-  std::vector<std::string> canvas(57, std::string(47, ' '));
+  std::vector<std::string> canvas(57, std::string(61, ' '));
   const int n_rows = static_cast<int>(m.get_tiles().size());
   for (int row_index = 0; row_index != n_rows; ++row_index)
   {
@@ -25,7 +25,7 @@ std::vector<std::string> to_text(const map& m)
       if (row_index <= 3)
       {
         // Go at 8 o'clock angle
-        const int x = 18 + (col_index * 6) - (row_index * 6);
+        const int x = 24 + (col_index * 8) - (row_index * 8);
         const int y = (row_index * 4) + (col_index * 4);
         draw(canvas, x, y, to_text(t));
       }
@@ -34,7 +34,7 @@ std::vector<std::string> to_text(const map& m)
         // Go down
         assert(row_index > 3);
         const int delta = row_index - 3;
-        const int x = 18 + ((col_index + delta) * 6) - (row_index * 6);
+        const int x = 24 + ((col_index + delta) * 8) - (row_index * 8);
         const int y = (row_index * 4) + ((col_index + delta) * 4);
         draw(canvas, x, y, to_text(t));
       }

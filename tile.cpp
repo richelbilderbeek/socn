@@ -54,15 +54,15 @@ void draw(
 std::vector<std::string> tile_base_as_text()
 {
   return {
-    R"|(    *-*    )|",
-    R"|(   /   \   )|",
-    R"|(           )|",
-    R"|( /       \ )|",
-    R"|(*         *)|",
-    R"|( \       / )|",
-    R"|(           )|",
-    R"|(   \   /   )|",
-    R"|(    *-*    )|"
+    R"|(    *---*    )|",
+    R"|(   /     \   )|",
+    R"|(             )|",
+    R"|( /         \ )|",
+    R"|(*           *)|",
+    R"|( \         / )|",
+    R"|(             )|",
+    R"|(   \     /   )|",
+    R"|(    *---*    )|"
   };
 }
 
@@ -72,7 +72,7 @@ std::vector<std::string> to_text(const tile& t)
   // Paste resource text
   {
     std::string resource_text = to_str(t.get_tile_type());
-    resource_text = add_spaces(resource_text, 9);
+    resource_text = add_spaces(resource_text, 11);
     const int n_chars = resource_text.size();
     for (int i = 0; i != n_chars; ++i)
     {
@@ -83,12 +83,11 @@ std::vector<std::string> to_text(const tile& t)
   if (t.get_dice_value())
   {
     std::string dice_text = std::to_string(t.get_dice_value());
-    //dice_text = add_spaces(dice_text, 9);
     const int n_chars = dice_text.size();
     for (int i = 0; i != n_chars; ++i)
     {
-      text[3][5 + i] = dice_text[i];
-      text[5][5 + i] = dice_text[i];
+      text[3][6 + i] = dice_text[i];
+      text[5][6 + i] = dice_text[i];
     }
   }
   return text;
@@ -103,15 +102,15 @@ void test_tile()
   {
     const std::vector<std::string> expected =
     {
-      R"|(    *-*    )|",
-      R"|(   /   \   )|",
-      R"|(           )|",
-      R"|( /       \ )|",
-      R"|(*         *)|",
-      R"|( \       / )|",
-      R"|(           )|",
-      R"|(   \   /   )|",
-      R"|(    *-*    )|"
+      R"|(    *---*    )|",
+      R"|(   /     \   )|",
+      R"|(             )|",
+      R"|( /         \ )|",
+      R"|(*           *)|",
+      R"|( \         / )|",
+      R"|(             )|",
+      R"|(   \     /   )|",
+      R"|(    *---*    )|"
     };
     const auto created = tile_base_as_text();
     assert(expected == created);
@@ -119,15 +118,15 @@ void test_tile()
   {
     const std::vector<std::string> expected =
     {
-      R"|(    *-*    )|",
-      R"|(   /   \   )|",
-      R"|(           )|",
-      R"|( /   12  \ )|",
-      R"|(*  wheat  *)|",
-      R"|( \   12  / )|",
-      R"|(           )|",
-      R"|(   \   /   )|",
-      R"|(    *-*    )|"
+      R"|(    *---*    )|",
+      R"|(   /     \   )|",
+      R"|(             )|",
+      R"|( /    12   \ )|",
+      R"|(*   wheat   *)|",
+      R"|( \    12   / )|",
+      R"|(             )|",
+      R"|(   \     /   )|",
+      R"|(    *---*    )|"
     };
     const auto created = to_text(
       tile(tile_type::wheat, 12)
