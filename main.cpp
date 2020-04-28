@@ -4,6 +4,7 @@
 #include "state.h"
 #include "strategy.h"
 #include "tile.h"
+#include "tile_type.h"
 #include "map.h"
 
 #include <algorithm>
@@ -20,6 +21,7 @@ void test()
   test_n_wool();
   test_resources();
 
+  test_tile_type();
   test_tile();
   test_map();
   test_action();

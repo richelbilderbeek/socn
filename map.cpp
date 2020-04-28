@@ -51,14 +51,14 @@ std::vector<std::vector<tile>> create_std_tiles()
     std::vector<tile>(
       {
         tile(tile_type::sea),
-        tile(tile_type::three_is_one_harbor),
+        tile(tile_type::three_is_one_harbor, 0, 8),
         tile(tile_type::sea),
-        tile(tile_type::three_is_one_harbor)
+        tile(tile_type::three_is_one_harbor, 0, 8)
       }
     ),
     std::vector<tile>(
       {
-        tile(tile_type::wool_harbor),
+        tile(tile_type::wool_harbor, 0, 6),
         tile(tile_type::wheat, 9),
         tile(tile_type::wool, 4),
         tile(tile_type::wool, 10),
@@ -72,12 +72,12 @@ std::vector<std::vector<tile>> create_std_tiles()
         tile(tile_type::wool, 12),
         tile(tile_type::ore, 8),
         tile(tile_type::wood, 11),
-        tile(tile_type::wheat_harbor)
+        tile(tile_type::wheat_harbor, 0, 8)
       }
     ),
     std::vector<tile>(
       {
-        tile(tile_type::ore_harbor),
+        tile(tile_type::ore_harbor, 0, 4),
         tile(tile_type::wheat, 4),
         tile(tile_type::wood, 5),
         tile(tile_type::desert),
@@ -93,12 +93,12 @@ std::vector<std::vector<tile>> create_std_tiles()
         tile(tile_type::bricks, 8),
         tile(tile_type::ore, 5),
         tile(tile_type::wheat, 6),
-        tile(tile_type::three_is_one_harbor)
+        tile(tile_type::three_is_one_harbor, 0, 12)
       }
     ),
     std::vector<tile>(
       {
-        tile(tile_type::wood_harbor),
+        tile(tile_type::wood_harbor, 0, 2),
         tile(tile_type::wool, 9),
         tile(tile_type::wood, 3),
         tile(tile_type::wheat, 3),
@@ -108,9 +108,9 @@ std::vector<std::vector<tile>> create_std_tiles()
     std::vector<tile>(
       {
         tile(tile_type::sea),
-        tile(tile_type::three_is_one_harbor),
+        tile(tile_type::three_is_one_harbor, 0, 12),
         tile(tile_type::sea),
-        tile(tile_type::bricks_harbor)
+        tile(tile_type::bricks_harbor, 0, 12)
       }
     )
   };

@@ -4,12 +4,15 @@
 
 tile::tile(
   const tile_type tile_type,
-  const int dice_value
+  const int dice_value,
+  const int orientation
 ) : m_tile_type{tile_type},
-    m_dice_value{dice_value}
+    m_dice_value{dice_value},
+    m_orientation{orientation}
 {
   assert(dice_value == 0 || dice_value >= 2);
   assert(dice_value <= 12);
+  assert(orientation >= 0 && orientation <= 12 && orientation % 2 == 0);
 }
 
 
@@ -51,6 +54,11 @@ void draw(
   }
 }
 
+constexpr bool is_harbor(const tile& t) noexcept
+{
+  return is_harbor(t.get_tile_type());
+}
+
 std::vector<std::string> tile_base_as_text()
 {
   return {
@@ -89,6 +97,18 @@ std::vector<std::string> to_text(const tile& t)
       text[3][6 + i] = dice_text[i];
       text[5][6 + i] = dice_text[i];
     }
+  }
+  // Paste harbor orientation
+  if (is_harbor(t))
+  {
+    const auto orientation = t.get_orientation();
+    assert(orientation != 0);
+    if (orientation == 10 || orientation == 12) text[1][5] = '\\';
+    if (orientation == 12 || orientation == 2) text[1][7] = '/';
+    if (orientation == 2 || orientation == 4) text[4][10] = '-';
+    if (orientation == 4 || orientation == 6) text[7][7] = '\\';
+    if (orientation == 6 || orientation == 8) text[7][5] = '/';
+    if (orientation == 8 || orientation == 10) text[4][2] = '-';
   }
   return text;
 }
@@ -130,6 +150,24 @@ void test_tile()
     };
     const auto created = to_text(
       tile(tile_type::wheat, 12)
+    );
+    assert(expected == created);
+  }
+  {
+    const std::vector<std::string> expected =
+    {
+      R"|(    *---*    )|",
+      R"|(   / \ / \   )|",
+      R"|(             )|",
+      R"|( /         \ )|",
+      R"|(*  2:1 ore  *)|",
+      R"|( \         / )|",
+      R"|(             )|",
+      R"|(   \     /   )|",
+      R"|(    *---*    )|"
+    };
+    const auto created = to_text(
+      tile(tile_type::ore_harbor, 0, 12)
     );
     assert(expected == created);
   }

@@ -87,7 +87,7 @@ void test_actions()
   // get_all_actionses
   {
     const auto actionses = get_all_actionses();
-    const auto created_sz = actionses.size();
+    //const auto created_sz = actionses.size();
     if (get_n_actions_to_win_the_game() == 10)
     {
       assert(actionses.size() == 944706);

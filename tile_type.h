@@ -1,5 +1,5 @@
-#ifndef RESOURCE_TYPE_H
-#define RESOURCE_TYPE_H
+#ifndef TILE_TYPE_H
+#define TILE_TYPE_H
 
 #include <string>
 
@@ -21,6 +21,10 @@ enum class tile_type
   sea
 };
 
+constexpr bool is_harbor(const tile_type t) noexcept;
+
 std::string to_str(const tile_type t) noexcept;
 
-#endif // RESOURCE_TYPE_H
+void test_tile_type();
+
+#endif // TILE_TYPE_H

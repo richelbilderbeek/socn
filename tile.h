@@ -1,7 +1,7 @@
 #ifndef TILE_H
 #define TILE_H
 
-#include "resource_type.h"
+#include "tile_type.h"
 
 #include <string>
 #include <vector>
@@ -11,22 +11,32 @@ class tile
 public:
   /// @param dice_value value to acquire the resource,
   ///   if the type is a resource. Use 0 otherwise
+  /// @param orientation orientation of the tile, to
+  ///   be used for harbors, usin the same orientation as a clock.
+  ///   Use 12 for up, 2 for top-right, etc.
+  ///   Use 0 if the orientation is unused.
   tile(
     const tile_type tile_type = tile_type::wheat,
-    const int dice_value = 0
+    const int dice_value = 0,
+    const int orientation = 0
   );
 
-  auto get_tile_type() const noexcept { return m_tile_type; }
-  auto get_dice_value() const noexcept { return m_dice_value; }
+  constexpr auto get_tile_type() const noexcept { return m_tile_type; }
+  constexpr auto get_dice_value() const noexcept { return m_dice_value; }
+  constexpr auto get_orientation() const noexcept { return m_orientation; }
 
 private:
   tile_type m_tile_type;
   int m_dice_value;
+  int m_orientation;
 };
 
 /// Add spaces up until the string is of the final size.
 /// The spacies will make the text be centered
 std::string add_spaces(std::string s, const int n_final_size);
+
+/// Is the tile a harbor?
+constexpr bool is_harbor(const tile& t) noexcept;
 
 /// Create the standard tiles
 std::vector<std::vector<tile>> create_std_tiles();
