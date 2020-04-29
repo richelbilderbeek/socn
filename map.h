@@ -28,6 +28,13 @@ private:
 
 void test_map();
 
+/// Return the X coordinat on the grid, from a grid column index
+/// @param col the Y index of a grid tile
+constexpr std::pair<int, int> tile_pos_to_canvas_pos(
+  const int col,
+  const int row
+) noexcept;
+
 std::vector<std::string> to_text(const map& m);
 
 /// Get the robber tile as text
