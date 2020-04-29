@@ -6,15 +6,36 @@
 
 map::map(
   const std::vector<std::vector<tile>>& tiles
-) : m_tiles{tiles}
+) : m_tiles{tiles},
+    m_robber_x{3},
+    m_robber_y{3}
+
 {
 
+}
+
+std::vector<std::string> robber_as_text() noexcept
+{
+  return {
+    R"|(    *---*    )|",
+    R"|(   /     \   )|",
+    R"|(             )|",
+    R"|( /XXXXXXXXX\ )|",
+    R"|(*X.ROBBER.XX*)|",
+    R"|( \XXXXXXXXX/ )|",
+    R"|(             )|",
+    R"|(   \     /   )|",
+    R"|(    *---*    )|"
+  };
 }
 
 std::vector<std::string> to_text(const map& m)
 {
   std::vector<std::string> canvas(57, std::string(61, ' '));
   const int n_rows = static_cast<int>(m.get_tiles().size());
+  const int minx{24};
+  const int dx{8};
+  const int dy{4};
   for (int row_index = 0; row_index != n_rows; ++row_index)
   {
     const auto& row = m.get_tiles()[static_cast<size_t>(row_index)];
@@ -25,19 +46,38 @@ std::vector<std::string> to_text(const map& m)
       if (row_index <= 3)
       {
         // Go at 8 o'clock angle
-        const int x = 24 + (col_index * 8) - (row_index * 8);
-        const int y = (row_index * 4) + (col_index * 4);
+        const int x = minx + (col_index * dx) - (row_index * dx);
+        const int y = (row_index * dy) + (col_index * dy);
         draw(canvas, x, y, to_text(t));
       }
       else
       {
         // Go down
         assert(row_index > 3);
-        const int delta = row_index - 3;
-        const int x = 24 + ((col_index + delta) * 8) - (row_index * 8);
-        const int y = (row_index * 4) + ((col_index + delta) * 4);
+        const int delta_row = row_index - 3;
+        const int x = minx + ((col_index + delta_row) * dx) - (row_index * dx);
+        const int y = (row_index * dy) + ((col_index + delta_row) * dy);
         draw(canvas, x, y, to_text(t));
       }
+    }
+  }
+  // Draw robber
+  {
+    const int col_index = m.get_robber_x();
+    const int row_index = m.get_robber_y();
+    if (row_index <= 3)
+    {
+      const int x = minx + (col_index * dx) - (row_index * dx);
+      const int y = (row_index * dy) + (col_index * dy);
+      draw(canvas, x, y, robber_as_text());
+    }
+    else
+    {
+      assert(row_index > 3);
+      const int delta_row = row_index - 3;
+      const int x = minx + ((col_index + delta_row) * dx) - (row_index * dx);
+      const int y = (row_index * dy) + ((col_index + delta_row) * dy);
+      draw(canvas, x, y, robber_as_text());
     }
   }
   return canvas;
@@ -48,6 +88,7 @@ std::vector<std::vector<tile>> create_std_tiles()
 {
   return
   {
+    // 0
     std::vector<tile>(
       {
         tile(tile_type::sea),
@@ -56,6 +97,7 @@ std::vector<std::vector<tile>> create_std_tiles()
         tile(tile_type::three_is_one_harbor, 0, 8)
       }
     ),
+    // 1
     std::vector<tile>(
       {
         tile(tile_type::wool_harbor, 0, 6),
@@ -65,6 +107,7 @@ std::vector<std::vector<tile>> create_std_tiles()
         tile(tile_type::sea)
       }
     ),
+    // 2
     std::vector<tile>(
       {
         tile(tile_type::sea),
@@ -75,6 +118,7 @@ std::vector<std::vector<tile>> create_std_tiles()
         tile(tile_type::wheat_harbor, 0, 8)
       }
     ),
+    // 3
     std::vector<tile>(
       {
         tile(tile_type::ore_harbor, 0, 4),
