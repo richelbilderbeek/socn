@@ -1,6 +1,7 @@
 #ifndef MAP_H
 #define MAP_H
 
+#include "map_pos.h"
 #include "tile.h"
 
 #include <iosfwd>
@@ -14,16 +15,14 @@ public:
 
   const auto& get_tiles() const noexcept { return m_tiles; }
 
-  constexpr int get_robber_x() const noexcept { return m_robber_x; }
-  constexpr int get_robber_y() const noexcept { return m_robber_y; }
+  constexpr auto& get_robber() const noexcept { return m_robber; }
 
 private:
   // Row-column ordered
   std::vector<std::vector<tile>> m_tiles;
 
   /// Coordinat of the robber
-  int m_robber_x;
-  int m_robber_y;
+  map_pos m_robber;
 };
 
 void test_map();

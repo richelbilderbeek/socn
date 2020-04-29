@@ -7,9 +7,7 @@
 map::map(
   const std::vector<std::vector<tile>>& tiles
 ) : m_tiles{tiles},
-    m_robber_x{3},
-    m_robber_y{3}
-
+    m_robber{3,3}
 {
 
 }
@@ -47,8 +45,8 @@ std::vector<std::string> to_text(const map& m)
   }
   // Draw robber
   {
-    const int col_index = m.get_robber_x();
-    const int row_index = m.get_robber_y();
+    const int col_index = m.get_robber().get_x();
+    const int row_index = m.get_robber().get_y();
     const int x = tile_pos_to_canvas_pos(col_index, row_index).first;
     const int y = tile_pos_to_canvas_pos(col_index, row_index).second;
     draw(canvas, x, y, robber_as_text());
